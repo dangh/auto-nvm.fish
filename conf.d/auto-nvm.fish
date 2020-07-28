@@ -32,11 +32,14 @@ function auto-nvm --on-variable PWD
   end
 
   #shadow over nvm's path
+  set --erase --global fish_user_paths
   set --global --export fish_user_paths $fish_user_paths
-  set --local current_version (string sub --start 2 (node --version))
-  if test "$fish_user_paths[1]" = "$nvm_config/$current_version/bin"
-    set --export fish_user_paths[1] "$node_dir"
-  else
-    set --export fish_user_paths "$node_dir" $fish_user_paths
+  for path in $fish_user_paths
+    switch $path
+      case "$nvm_config/*/bin"
+        set --local i (contains --index "$path" $fish_user_paths)
+        set --erase --global fish_user_paths[$i]
+    end
   end
+  set --export fish_user_paths "$node_dir" $fish_user_paths
 end
