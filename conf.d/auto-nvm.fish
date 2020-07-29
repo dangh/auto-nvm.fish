@@ -49,7 +49,8 @@ function patch-nvm --description 'patch nvm to use global scope'
   test -n "$nvm_config"; or nvm --help >/dev/null
 
   #patch nvm use
-  string replace 'set -U fish_user_paths' 'set -g fish_user_paths' (functions _nvm_use) | source
+  set --local to_replace 'set -U fish_user_paths "$nvm_config/$ver/bin" $fish_user_paths'
+  string replace "$to_replace" "set -eg fish_user_paths; $to_replace; auto-nvm" (functions _nvm_use) | source
 end
 
 patch-nvm
