@@ -2,9 +2,6 @@ function auto-nvm --on-variable PWD
   set --local nvm_file .nvmrc
   set --local node_version lts
 
-  #install nvm if required
-  functions --query nvm; or fisher add jorgebucaran/fish-nvm
-
   #load nvm and it's utility functions
   test -n "$nvm_config"; or nvm --help >/dev/null
 
@@ -42,9 +39,6 @@ function auto-nvm --on-variable PWD
 end
 
 function patch-nvm --description 'patch nvm to use global scope'
-  #install nvm if required
-  functions --query nvm; or fisher add jorgebucaran/fish-nvm
-
   #load nvm and it's utility functions
   test -n "$nvm_config"; or nvm --help >/dev/null
 
