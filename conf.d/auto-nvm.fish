@@ -3,7 +3,7 @@ function auto-nvm --on-variable PWD
   set --local node_version lts
 
   #install nvm if required
-  type --quiet nvm; or fisher add jorgebucaran/fish-nvm
+  functions --query nvm; or fisher add jorgebucaran/fish-nvm
 
   #load nvm and it's utility functions
   test -n "$nvm_config"; or nvm --help >/dev/null
@@ -43,7 +43,7 @@ end
 
 function patch-nvm --description 'patch nvm to use global scope'
   #install nvm if required
-  type --quiet nvm; or fisher add jorgebucaran/fish-nvm
+  functions --query nvm; or fisher add jorgebucaran/fish-nvm
 
   #load nvm and it's utility functions
   test -n "$nvm_config"; or nvm --help >/dev/null
