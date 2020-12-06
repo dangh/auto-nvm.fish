@@ -1,5 +1,4 @@
 function auto-nvm --on-variable PWD
-  set --local v
   set --local v_fallback lts
 
   #load nvm and it's utility functions
@@ -22,12 +21,12 @@ function auto-nvm --on-variable PWD
   #do nothing if version is not changed
   test "$v" = "$nvm_current_version" && return
 
-  #switch version if necessary
+  #install if necessary
   _nvm_list | string match --entire --regex (_nvm_version_match $v) | read v_installed __
   if test -n "$v_installed"
     nvm use $v_installed >/dev/null
   else
-    nvm install $v_installed >/dev/null
+    nvm install $v >/dev/null
   end
 
   #print nvm message
