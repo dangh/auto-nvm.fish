@@ -17,10 +17,18 @@ function auto-nvm --on-variable PWD
   test -n "$v" || set v $v_fallback
 
   #resolve v to specific version
-  string match --entire --regex (_nvm_version_match $v) <$nvm_data/.index | read v alias
+  string match --entire --regex (_nvm_version_match $v) <$nvm_data/.index | read v __
+
+  #do nothing if version is not changed
+  test "$v" = "$nvm_current_version" && return
 
   #switch version if necessary
-  test "$v" = "$nvm_current_version" || nvm install $v >/dev/null
+  _nvm_list | string match --entire --regex (_nvm_version_match $v) | read v_installed __
+  if test -n "$v_installed"
+    nvm use $v_installed >/dev/null
+  else
+    nvm install $v_installed >/dev/null
+  end
 
   #print nvm message
   set --query auto_nvm_quiet || printf "Now using Node %s (npm %s) %s\n" (_nvm_node_info)
