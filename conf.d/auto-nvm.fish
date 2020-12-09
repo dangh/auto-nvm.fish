@@ -32,3 +32,9 @@ function auto-nvm --on-variable PWD
   #print nvm message
   set --query auto_nvm_quiet || printf "Now using Node %s (npm %s) %s\n" (_nvm_node_info)
 end
+
+#load nvm on start
+set --local config_file ~/.config/fish/config.fish
+set --local load_script "\\n#load nvm on start\\nauto-nvm\\n"
+test -f $config_file || echo -e $load_script > $config_file
+string match --quiet --regex '^auto-nvm$' < $config_file || echo -e $load_script >> $config_file
