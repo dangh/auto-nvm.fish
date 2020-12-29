@@ -1,4 +1,6 @@
 function auto-nvm --on-variable PWD
+  status is-interactive || return
+
   set --local v_fallback lts
 
   #load nvm and it's utility functions
