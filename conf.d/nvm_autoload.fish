@@ -1,5 +1,8 @@
 function nvm-activate
   set --local v_fallback lts
+  
+  #nvm_current_version might be exported to this process
+  set --query nvm_current_version && ! type --query node && set --erase nvm_current_version
 
   #load nvm and it's utility functions
   type nvm >/dev/null || nvm --help >/dev/null
