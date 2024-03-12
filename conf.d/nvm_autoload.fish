@@ -1,3 +1,16 @@
+function _nvm_find_up_multi
+  set -l dir $argv[1]
+  set -l files $argv[2..]
+  for file in $files
+    if test -e "$dir/$file"
+      echo $dir/$file
+    end
+  end
+  if test "$dir" != '/'
+    _nvm_find_up_multi (path dirname $dir) $files
+  end
+end
+
 function nvm-activate
   set -l v_fallback lts
 
@@ -8,8 +21,16 @@ function nvm-activate
   type nvm >/dev/null || nvm --help >/dev/null
 
   #read version from nvm files
-  for file in .nvmrc .node-version
-    set file (_nvm_find_up $PWD $file) && read v <$file && break
+  _nvm_find_up_multi $PWD .nvmrc .node-version serverless.yml | while read -l file
+    switch $file
+    case "*/.nvmrc" "*/.node-version"
+      read v <$file
+      break
+    case "*/serverless.yml"
+      if string match -q -r '^\s*runtime:\s*nodejs(?<v>\d+).x' <$file
+        break
+      end
+    end
   end
 
   #if there's no nvm files, use default version
